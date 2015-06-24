@@ -1,0 +1,136 @@
+﻿<link rel="import" href="../../bower_components/polymer/polymer.html" />
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html" />
+
+<dom-module id="hello-world">
+
+    <link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <template>
+        <style>
+            @import '../../Content/bootstrap.css';
+
+            .container {
+                font-family: sans-serif;
+                -webkit-text-size-adjust: 100%;
+                -ms-text-size-adjust: 100%;
+                -moz-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                padding-top: 23px;
+            }
+
+            .title {
+                font-size: 24px;
+                font-weight: bold;
+            }
+
+            .subtitle {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .copyright {
+                font-size: 10px;
+            }
+
+            .score {
+                font-size: 48px;
+            }
+        </style>
+
+
+
+        <iron-ajax id="ajax"
+                   url="http://omdbapi.com/"
+                   params='{"t", ""}'
+                   handle-as="json"
+                   on-response="handleResponse">
+        </iron-ajax>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{searchFor::input}}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button"
+                                    on-click="btnFind">
+                                Search for Movie
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 23px;">
+                <div class="col-md-10 col-sm-8 col-xs-8">
+                    <div>
+                        <img src="{{data.Poster}}" width="150"
+                             style="float: left; margin: 13px;" />
+                        <div class='title'>{{data.Title}}</div>
+                        <span>{{data.Plot}}</span>
+                    </div>
+                    <h4>Actors</h4>
+                    <div>{{data.Actors}}</div>
+                </div>
+                <div class="col-md-2" style="text-align: center;">
+                    <span class="subtitle">IMDB Rating</span>
+                    <br />
+                    <span class="score">{{data.imdbRating}}</span>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Details</h4>
+                    <table class="table table-bordered table-hover table-striped">
+                        <tr>
+                            <td>Director</td>
+                            <td>{{data.Director}}</td>
+                        </tr>
+                        <tr>
+                            <td>Running Time</td>
+                            <td>{{data.Runtime}}</td>
+                        </tr>
+                        <tr>
+                            <td>Release Date</td>
+                            <td>{{data.Released}}</td>
+                        </tr>
+                        <tr>
+                            <td>Awards</td>
+                            <td>{{data.Awards}}</td>
+                        </tr>
+                    </table>
+                    <div class="copyright">
+                        Web Component developed by Steve Fabian<br />
+                        <a href="http://github.com/SteveFabian">View Project on GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: "hello-world",
+            properties: {
+                movie: { type: String },
+                data: {},
+                searchFor: { type: String }
+            },
+            ready: function() {
+                this.$.ajax.params = { "t": this.movie };
+                this.$.ajax.generateRequest();
+                this.searchFor = this.movie;
+            },
+            handleResponse: function(resp) {
+                this.data = resp.detail.response;
+            },
+            btnFind: function () {
+                this.movie = this.searchFor;
+                this.$.ajax.params = { "t": this.movie };
+                this.$.ajax.generateRequest();
+            }
+        });
+    </script>
+
+</dom-module>

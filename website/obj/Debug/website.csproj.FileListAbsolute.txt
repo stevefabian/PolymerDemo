@@ -1,0 +1,5 @@
+F:\src\GitHub\PolymerDemo\website\bin\website.dll.config
+F:\src\GitHub\PolymerDemo\website\bin\website.dll
+F:\src\GitHub\PolymerDemo\website\bin\website.pdb
+F:\src\GitHub\PolymerDemo\website\obj\Debug\website.dll
+F:\src\GitHub\PolymerDemo\website\obj\Debug\website.pdb
